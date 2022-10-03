@@ -13,6 +13,8 @@
 #include <hashtable/hashtable.h>
 #include <mathc/mathc.h>
 
+#include "../fonts.h"
+
 // ++ Components
 
 typedef enum ComponentType {
@@ -20,9 +22,9 @@ typedef enum ComponentType {
 } ComponentType;
 
 typedef struct TransformComponent {
-	mfloat_t Position[VEC3_SIZE];
-	mfloat_t Scale[VEC3_SIZE];
-	mfloat_t Rotation;
+	mfloat_t position[VEC3_SIZE];
+	mfloat_t scale[VEC3_SIZE];
+	mfloat_t rotation;
 } TransformComponent;
 
 // -- Components
@@ -57,19 +59,12 @@ typedef struct ImageSprite {
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);
 
-typedef struct FontObject {
-	ExtendsInstance;
-	char       *font_path;
-	bool        font_is_loaded; // READ-ONLY
-	
-	uint32_t    font_size;
-} FontObject;
-FontObject *instance_new_font_object(void);
-
 typedef struct TextLabel {
 	ExtendsInstance;
-	FontObject  font;
-	char       *text; // TODO: Text Color
+	enum Font  font;
+	uint32_t   font_size;
+	char       *text;     // TODO: Text Color
+	TransformComponent transform;
 } TextLabel;
 TextLabel *instance_new_text_label(void);
 

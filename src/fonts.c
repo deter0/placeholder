@@ -1,13 +1,16 @@
 
-#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro.h>
 
-#include <stdio.h>
 #include <hashtable/hashtable.h>
+#include <assert.h>
+#include <stdio.h>
 #include <err.h>
+
+#include "fonts.h"
 
 #define DEBUG_FONTS
 
@@ -23,6 +26,31 @@ static const uint32_t font_sizes[] = {
 };
 static const uint32_t num_font_sizes = sizeof(font_sizes)/sizeof(font_sizes[0]);
 
+static const char *font_paths[] = {
+	"../assets/fonts/Alegreya-Regular.ttf",
+	"../assets/fonts/AlmendraDisplay-Regular.ttf"
+};
+static const char *font_names[] = {
+	"Alegreya",
+	"Almendra",
+};
+static ALLEGRO_FONT *fonts_fi[FONT_LAST_INVALID] = {0};
+
+static_assert((sizeof(font_paths)/sizeof(font_paths[0])) == FONT_LAST_INVALID);
+static_assert((sizeof(font_names)/sizeof(font_names[0])) == FONT_LAST_INVALID);
+
+int fonts_load_defaults(void) {
+	for (size_t i = 0; i < FONT_LAST_INVALID; i++) {
+		const char *path = font_paths[i];
+		const char *name = font_names[i];
+		printf("[DEBUG] Loaded font `%s` (at `%s`)\n", name, path);
+		fonts_create_font(name, path);
+	}
+}
+const char *get_font(enum Font font) {
+	assert(font < FONT_LAST_INVALID);
+	return font_names[font];
+}
 
 int fonts_create_font(const char *name, const char *font_file) {
 	if (FontsHTInit == false) {
@@ -44,7 +72,7 @@ int fonts_create_font(const char *name, const char *font_file) {
 #ifdef DEBUG_FONTS
 	printf("[DEBUG] Put Font: %s\n", name);
 #endif
-	hashtable_insert(&Fonts, 0, (const void*)name, (const void*)&loaded_fonts);
+	hashtable_insert(&Fonts, hash_str(name), (const void*)name, (const void*)&loaded_fonts);
 	return 0;
 }
 
@@ -53,7 +81,7 @@ ALLEGRO_FONT **fonts_get_fonts(const char *name) { // TODO: Return a default fon
 
 	ALLEGRO_FONT ***retrieved_fonts = (ALLEGRO_FONT**)hashtable_find(
 		&Fonts,
-		0,
+		hash_str(name),
 		name
 	);
 	if (retrieved_fonts == NULL) {
@@ -102,7 +130,7 @@ int fonts_delete_font(const char *name) {
 		al_destroy_font(fonts[i]);
 	}
 	free(fonts);
-	hashtable_remove(&Fonts, 0, name);
+	hashtable_remove(&Fonts, hash_str(name), name);
 	
 	return 0;
 }

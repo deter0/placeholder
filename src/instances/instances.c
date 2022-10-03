@@ -42,8 +42,6 @@ int instance_destroy(Instance *subject) {
 		
 		if (promoted->text != NULL)
 			free(promoted->text);
-		if (promoted->font.font_path != NULL)
-			free(promoted->font.font_path);
 	}
 	
 	
@@ -234,7 +232,7 @@ ImageSprite *instance_new_image_sprite(void) {
 	
 	return image_sprite;
 }
-
+/* Deprecated - Removed
 FontObject *instance_new_font_object(void) {
 	FontObject *font_object = malloc(sizeof(*font_object));
 	if (!font_object)
@@ -259,7 +257,7 @@ FontObject *instance_new_font_object(void) {
 	font_object->font_size = 32;
 	return font_object;
 }
-
+*/
 TextLabel *instance_new_text_label(void) {
 	TextLabel *text_label = malloc(sizeof(*text_label));
 	if (!text_label)
@@ -280,7 +278,8 @@ TextLabel *instance_new_text_label(void) {
 	// );
 	init_children_fi(text_label);
 	
-	text_label->font.font_size = 32;
+	text_label->font = Alegreya;
+	text_label->font_size = 32;
 	text_label->text = strdup("Hello, World!");
 	return text_label;
 }

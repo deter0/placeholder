@@ -50,8 +50,8 @@ ALLEGRO_DISPLAY *init_allegro() {
     
     al_install_keyboard();
     
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW | ALLEGRO_RESIZABLE);
-    ALLEGRO_DISPLAY *display = al_create_display(1920, 1080);
+    al_set_new_display_flags(ALLEGRO_RESIZABLE);
+    ALLEGRO_DISPLAY *display = al_create_display(1024, 1024);
     if (!display)
         err(-1, "Failed to create allegro display!\n");
     
@@ -134,7 +134,7 @@ int instance_parenting_test(void) {
     
     return 0;
 }
-#define INSTANCE_PARENT_TEST
+// #define INSTANCE_PARENT_TEST
 #ifdef HSHTBL_TEST
 int main() {
     hashtable_test();
@@ -153,7 +153,8 @@ int main() {
     al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_timer_event_source(frame_timer));
     
-    fonts_create_font("Alegreya", "../assets/fonts/Alegreya-Regular.ttf");
+    // fonts_create_font("Alegreya", "../assets/fonts/Alegreya-Regular.ttf");
+    fonts_load_defaults();
     // ALLEGRO_FONT *font = al_load_ttf_font("../assets/fonts/Alegreya-Regular.ttf", 64, 0);
     // ALLEGRO_ASSERT(font != NULL);
     
@@ -169,6 +170,7 @@ int main() {
     };
     
     bool running = true;
+    
     while (running) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
@@ -191,9 +193,6 @@ int main() {
                 int height = al_get_display_height(display);
                 world_draw(&world, &state, width, height);
                 
-                ALLEGRO_FONT *font = fonts_get_font("Alegreya", 95);
-                assert(font != NULL);
-                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Hello, World!");
                 al_flip_display();
             } break;
             case (ALLEGRO_EVENT_DISPLAY_RESIZE): {
