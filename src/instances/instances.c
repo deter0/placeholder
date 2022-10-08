@@ -42,8 +42,14 @@ int instance_destroy(Instance *subject) {
 		
 		if (promoted->text != NULL)
 			free(promoted->text);
+	} else if (strcmp(subject->class_name, "ImageSprite") == 0) {
+		ImageSprite *promoted = (ImageSprite*)subject;
+		
+		if (promoted->image_path != NULL)
+			free(promoted->image_path);
+		if (promoted->image_is_loaded)
+			al_destroy_bitmap(promoted->bm);
 	}
-	
 	
 	free(subject->name);
 	free(subject->class_name);
@@ -111,6 +117,7 @@ int instance_set_name(Instance *subject, const char *new_name) {
 	return 0;
 }
 
+// ! FIXME(kay): Instance with the same name crashes (FIXED)
 int instance_set_parent(Instance* subject, Instance *new_parent) {
 	Instance *old_parent = subject->parent;
 	if (!(subject != NULL)) {
@@ -168,18 +175,25 @@ int instance_set_parent(Instance* subject, Instance *new_parent) {
 		}
 	}
 	next:
-		if (new_parent) {
+		if (new_parent != NULL) {
 			if (new_parent->children_count >= MAX_CHILDREN) {
 				// No need to free since we're exiting
 				errx(1, "Instance exceeds max children. `%s`\n", get_instance_debug_info(new_parent));
 			}
 			new_parent->children[new_parent->children_count++] = subject;
-			hashtable_insert(
+			Instance **similar_exists = hashtable_find(
 				&new_parent->children_fi,
 				hash_str(subject->name),
-				strdup(subject->name), // ! MAYBE MEM LEAK?
-				&subject
+				subject->name
 			);
+			if (!(similar_exists != NULL && (*similar_exists) != NULL)) {
+				hashtable_insert(
+					&new_parent->children_fi,
+					hash_str(subject->name),
+					strdup(subject->name), // ! MAYBE MEM LEAK?
+					&subject
+				);
+			}
 			subject->parent = new_parent;
 		} else {
 			subject->parent = NULL;
@@ -229,10 +243,42 @@ ImageSprite *instance_new_image_sprite(void) {
 	image_sprite->transform   = (TransformComponent){0};
 	image_sprite->image_path  = NULL;
 	image_sprite->image_is_loaded = false;
+	image_sprite->bm = NULL;
 	
 	return image_sprite;
 }
-/* Deprecated - Removed
+
+int instance_image_sprite_load_image(ImageSprite *img_sprite) {
+	if (img_sprite->image_is_loaded == false) {
+		if (img_sprite->bm != NULL) {
+			al_destroy_bitmap(img_sprite->bm);
+		}
+		assert(img_sprite->image_path);
+
+		ALLEGRO_BITMAP *bm = al_load_bitmap(img_sprite->image_path);
+		assert(bm != NULL);
+		img_sprite->bm = bm;
+		
+		img_sprite->bm_w = al_get_bitmap_width(bm);
+		img_sprite->bm_h = al_get_bitmap_height(bm);
+		
+		img_sprite->image_is_loaded = true;
+		
+		return 0;
+	} else {
+		const char *info = get_instance_debug_info((Instance*)img_sprite);
+		warnx("[WARNING]: called `instance_image_sprite_load_image` on image_sprite thats already loaded (%s).\n", info);
+		free(info);
+
+		img_sprite->bm = NULL;
+		img_sprite->bm_w = 0;
+		img_sprite->bm_h = 0;
+
+		return -1;
+	}
+}
+
+/* Legacy - Removed
 FontObject *instance_new_font_object(void) {
 	FontObject *font_object = malloc(sizeof(*font_object));
 	if (!font_object)

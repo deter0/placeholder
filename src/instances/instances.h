@@ -52,12 +52,18 @@ Scene *instance_new_scene(void);
 
 typedef struct ImageSprite {
 	ExtendsInstance;
-	const char *image_path;
-	bool        image_is_loaded; // READ-ONLY
+	const char     *image_path;
+	bool            image_is_loaded; // READ-ONLY
+	ALLEGRO_BITMAP *bm;
+	uint32_t        bm_w;
+	uint32_t        bm_h;
 	
+	mfloat_t       anchor_point[VEC2_SIZE]; // 0 to 1
 	TransformComponent transform;
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);
+
+int instance_image_sprite_load_image(ImageSprite *img_sprite);
 
 typedef struct TextLabel {
 	ExtendsInstance;
