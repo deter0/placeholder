@@ -63,17 +63,24 @@ typedef struct ImageSprite {
 	TransformComponent transform;
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);
-
 int instance_image_sprite_load_image(ImageSprite *img_sprite);
 
 typedef struct TextLabel {
 	ExtendsInstance;
-	enum Font  font;
-	uint32_t   font_size;
-	char       *text;     // TODO: Text Color
+	enum Font   font;
+	uint32_t    font_size;
+	char       *text;
+	V4f         text_color;
 	TransformComponent transform;
 } TextLabel;
 TextLabel *instance_new_text_label(void);
+
+typedef struct Rectangle {
+	ExtendsInstance;
+	TransformComponent transform;
+	V4f                color;
+} Rectangle;
+Rectangle *instance_new_rectangle(void);
 
 // -- Instances
 

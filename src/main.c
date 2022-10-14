@@ -1,5 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+
+#define LA_IMPLEMENTATION
+#include <la/la.h>
+#undef LA_IMPLEMENTATION
+
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>

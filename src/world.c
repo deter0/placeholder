@@ -19,7 +19,7 @@ static void try_draw_instance(Instance *instance) {
 		TextLabel *promoted = (TextLabel*)instance;
 		al_draw_textf(
 			fonts_get_font(get_font(promoted->font), promoted->font_size),
-			al_map_rgb(255, 255, 255),
+			al_map_rgba_f(promoted->text_color.x, promoted->text_color.y, promoted->text_color.z, promoted->text_color.w),
 			promoted->transform.position.x, promoted->transform.position.y,
 			0,
 			"%s",
@@ -47,8 +47,30 @@ static void try_draw_instance(Instance *instance) {
 				0                                               // Flags
 			);
 		} else {
-			// Draw purple rect
+			al_draw_filled_rectangle(
+				promoted->transform.position.x,
+				promoted->transform.position.y,
+				promoted->transform.position.x
+				 + promoted->transform.scale.x,
+				promoted->transform.position.y
+				 + promoted->transform.scale.y,
+				al_map_rgb(255, 0, 220)
+			);
 		}
+	} else if (strcmp(instance->class_name, "Rectangle") == 0) {
+		Rectangle *promoted = (Rectangle*)instance;
+		al_draw_filled_rectangle(
+			promoted->transform.position.x,
+			promoted->transform.position.y,
+			promoted->transform.position.x + promoted->transform.scale.x,
+			promoted->transform.position.y + promoted->transform.scale.y,
+			al_map_rgba_f(
+				promoted->color.x,
+				promoted->color.y,
+				promoted->color.z,
+				promoted->color.w
+			)
+		);
 	}
 }
 
@@ -80,12 +102,15 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		// instance_set_name(grace, "GRACE");
 		
 		ImageSprite *test = instance_new_image_sprite();
-		test->image_path = strdup("../assets/gfx/cool.jpg");
+		test->image_path = strdup("../assets/gfx/default_character.png");
 		test->transform.position.x = 250;
 		test->transform.scale.x = 500;
 		test->transform.scale.y = 500;
 		instance_image_sprite_load_image(test);
+		
+		Rectangle *rect = instance_new_rectangle();
 
+		instance_set_parent((Instance*)rect,        (Instance*)main_scene);
 		instance_set_parent((Instance*)test,        (Instance*)main_scene);
 		instance_set_parent((Instance*)hello_world, (Instance*)main_scene);
 		instance_set_parent((Instance*)other_font,  (Instance*)main_scene);

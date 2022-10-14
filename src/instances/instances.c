@@ -2,19 +2,23 @@
 #include <string.h>
 #include <err.h>
 
+#define LA_IMPLEMENTATION
+#include <la/la.h>
+
 #include <hashtable/hashtable.h>
 
 #define init_children_fi(X) hashtable_init( \
-	&((X)->children_fi),                       \
-	sizeof(const void*),                            \
+	&((X)->children_fi),                      \
+	sizeof(const void*),                      \
 	sizeof(Instance**),                       \
 	MAX_CHILDREN,                             \
-	NULL)
+	NULL                                      \
+)
 
-static size_t id = 0;
+static size_t cur_id = 0;
 static size_t gen_instance_id(void) {
-	id += 1;
-	return id;
+	cur_id += 1;
+	return cur_id;
 }
 
 // ! Be sure to free
@@ -25,7 +29,7 @@ static char *get_instance_debug_info(Instance *instance) {
 	memset(buffer, 0, 512);
 
 	sprintf(buffer, "[Instance: %lu] (%p) %s '%s'", instance->id, instance, instance->class_name, instance->name);
-	
+
 	return buffer;
 }
 
@@ -315,17 +319,31 @@ TextLabel *instance_new_text_label(void) {
 	text_label->id 				 = gen_instance_id();
 	text_label->parent     = NULL;
 	
-	// hashtable_init(
-	// 	&text_label->children_fi,
-	// 	sizeof(char*),
-	// 	sizeof(Instance*),
-	// 	MAX_CHILDREN,
-	// 	0
-	// );
 	init_children_fi(text_label);
 	
 	text_label->font = Alegreya;
 	text_label->font_size = 32;
+	text_label->text_color = v4ff(1.f);
 	text_label->text = strdup("Hello, World!");
 	return text_label;
 }
+
+Rectangle *instance_new_rectangle(void) {
+	Rectangle *rectangle = malloc(sizeof(*rectangle));
+	if (!rectangle)
+		return 0;
+	memset(rectangle, 0, sizeof(*rectangle));
+	
+	rectangle->class_name = strdup("Rectangle");
+	rectangle->name       = strdup("Rectangle");
+	rectangle->id 				 = gen_instance_id();
+	rectangle->parent     = NULL;
+	
+	init_children_fi(rectangle);
+	
+	rectangle->color = v4ff(1.f);
+	rectangle->transform.scale = v2ff(100.f);
+
+	return rectangle;
+}
+
