@@ -18,7 +18,7 @@ static size_t gen_instance_id(void) {
 }
 
 // ! Be sure to free
-const char *get_instance_debug_info(Instance *instance) {
+static char *get_instance_debug_info(Instance *instance) {
 	char *buffer = (char*)malloc(512);
 
 	assert(buffer);
@@ -266,7 +266,7 @@ int instance_image_sprite_load_image(ImageSprite *img_sprite) {
 		
 		return 0;
 	} else {
-		const char *info = get_instance_debug_info((Instance*)img_sprite);
+		char *info = get_instance_debug_info((Instance*)img_sprite);
 		warnx("[WARNING]: called `instance_image_sprite_load_image` on image_sprite thats already loaded (%s).\n", info);
 		free(info);
 

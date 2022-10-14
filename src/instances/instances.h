@@ -11,7 +11,8 @@
 #include <allegro5/allegro_primitives.h>
 
 #include <hashtable/hashtable.h>
-#include <mathc/mathc.h>
+
+#include <la/la.h>
 
 #include "../fonts.h"
 
@@ -22,9 +23,9 @@ typedef enum ComponentType {
 } ComponentType;
 
 typedef struct TransformComponent {
-	mfloat_t position[VEC3_SIZE];
-	mfloat_t scale[VEC3_SIZE];
-	mfloat_t rotation;
+	V2f   position;
+	V2f   scale;
+	float rotation;
 } TransformComponent;
 
 // -- Components
@@ -52,13 +53,13 @@ Scene *instance_new_scene(void);
 
 typedef struct ImageSprite {
 	ExtendsInstance;
-	const char     *image_path;
+	char           *image_path;
 	bool            image_is_loaded; // READ-ONLY
 	ALLEGRO_BITMAP *bm;
 	uint32_t        bm_w;
 	uint32_t        bm_h;
 	
-	mfloat_t       anchor_point[VEC2_SIZE]; // 0 to 1
+	V2f             anchor_point; // 0 to 1
 	TransformComponent transform;
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);

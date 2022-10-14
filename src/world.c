@@ -2,7 +2,6 @@
 #include <allegro5/bitmap.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
-#include <mathc/mathc.h>
 
 #include <stdio.h>
 
@@ -21,13 +20,12 @@ static void try_draw_instance(Instance *instance) {
 		al_draw_textf(
 			fonts_get_font(get_font(promoted->font), promoted->font_size),
 			al_map_rgb(255, 255, 255),
-			promoted->transform.position[0], promoted->transform.position[1],
+			promoted->transform.position.x, promoted->transform.position.y,
 			0,
 			"%s",
 			promoted->text
 		);
 	} else if (strcmp(instance->class_name, "ImageSprite") == 0) {
-		printf("[DEBUG] Draw Bitmap.\n");
 		ImageSprite *promoted = (ImageSprite*)instance;
 		if (promoted->image_is_loaded) {
 			assert(promoted->bm != NULL && promoted->bm_h != 0 && promoted->bm_w != 0);
@@ -39,12 +37,12 @@ static void try_draw_instance(Instance *instance) {
 				promoted->bm_w, 												        // Source W
 				promoted->bm_h, 												        // Source H
 				al_map_rgb(255, 255, 255),                      // Tint
-				promoted->anchor_point[0],							        // Center X
-				promoted->anchor_point[1],                      // Center Y
-				promoted->transform.position[0],                // X
-				promoted->transform.position[1],                // Y
-				promoted->transform.scale[0] / promoted->bm_w,  // Scale X
-				promoted->transform.scale[1] / promoted->bm_h,  // Scale Y
+				promoted->anchor_point.x,							        // Center X
+				promoted->anchor_point.y,                      // Center Y
+				promoted->transform.position.x,                // X
+				promoted->transform.position.y,                // Y
+				promoted->transform.scale.x / promoted->bm_w,  // Scale X
+				promoted->transform.scale.y / promoted->bm_h,  // Scale Y
 				0.0f,                                           // Rotation
 				0                                               // Flags
 			);
@@ -71,11 +69,11 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		TextLabel *other_font = instance_new_text_label();
 		other_font->text = strdup("This is another cool font");
 		other_font->font = Almendra;
-		other_font->transform.position[0] = 500;
+		other_font->transform.position.x = 500;
 		// instance_set_name(other_font, "OtherFont");
 		
 		TextLabel *grace = instance_new_text_label();
-		grace->transform.position[1] = 250;
+		grace->transform.position.x = 250;
 		grace->text = strdup("hi grace!!!!!!!!!!!!!!!!!!!!!heeeeeeeeeeeeey");
 		grace->font = Almendra;
 		grace->font_size = 64;
@@ -83,15 +81,15 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		
 		ImageSprite *test = instance_new_image_sprite();
 		test->image_path = strdup("../assets/gfx/cool.jpg");
-		test->transform.position[0] = 250;
-		test->transform.scale[0] = 500;
-		test->transform.scale[1] = 500;
+		test->transform.position.x = 250;
+		test->transform.scale.x = 500;
+		test->transform.scale.y = 500;
 		instance_image_sprite_load_image(test);
 
-		instance_set_parent(test, main_scene);
-		instance_set_parent(hello_world, main_scene);
-		instance_set_parent(other_font, main_scene);
-		instance_set_parent(grace, main_scene);
+		instance_set_parent((Instance*)test,        (Instance*)main_scene);
+		instance_set_parent((Instance*)hello_world, (Instance*)main_scene);
+		instance_set_parent((Instance*)other_font,  (Instance*)main_scene);
+		instance_set_parent((Instance*)grace,       (Instance*)main_scene);
 	}
 	assert(main_scene != NULL);
 	al_clear_to_color(al_map_rgb(0, 0, 0));

@@ -22,8 +22,6 @@ sources = [
 	'src/fonts.c',
 	'src/instances/instances.c',
 	'src/hashes.c',
-	
-	'libs/mathc/mathc.c',
 ]
 
 executable('placeholder', sources : sources, dependencies : dependencies, include_directories : inc_dirs)
