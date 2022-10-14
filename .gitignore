@@ -1,1 +1,5 @@
 .vscode/
+prebuild/la/la.c.o
+prebuild/la/la.cxx.o
+prebuild/la/la.h
+prebuild/la/lag
