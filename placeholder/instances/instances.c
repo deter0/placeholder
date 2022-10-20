@@ -20,14 +20,14 @@
 
 #include <placeholder/instances/instance_methods.c>
 
-static size_t cur_id = 0;
-static function size_t gen_instance_id(void) {
+private size_t cur_id = 0;
+private function size_t gen_instance_id(void) {
 	cur_id += 1;
 	return cur_id;
 }
 
 // ! Be sure to free
-static function char* get_instance_debug_info(Instance *instance) {
+private function char* get_instance_debug_info(Instance *instance) {
 	char *buffer = (char*)malloc(512);
 
 	assert(buffer);
@@ -211,7 +211,7 @@ function int instance_set_parent(Instance* subject, Instance *new_parent) {
 	return 0;
 }
 
-function Scene* instance_new_scene(void) {
+constructor function Scene* instance_new_scene(void) {
 	Scene *scene = malloc(sizeof(*scene));
 	if (!scene)
 		return NULL;
@@ -235,7 +235,7 @@ function Scene* instance_new_scene(void) {
 	return scene;
 }
 
-function ImageSprite* instance_new_image_sprite(void) {
+constructor function ImageSprite* instance_new_image_sprite(void) {
 	ImageSprite *image_sprite = malloc(sizeof(*image_sprite));
 	if (!image_sprite)
 		return NULL;
@@ -257,7 +257,7 @@ function ImageSprite* instance_new_image_sprite(void) {
 	return image_sprite;
 }
 
-function int instance_image_sprite_load_image(ImageSprite *img_sprite) {
+constructor function int instance_image_sprite_load_image(ImageSprite *img_sprite) {
 	if (img_sprite->image_is_loaded == false) {
 		if (img_sprite->bm != NULL) {
 			al_destroy_bitmap(img_sprite->bm);
@@ -313,7 +313,7 @@ FontObject *instance_new_font_object(void) {
 	return font_object;
 }
 */
-function TextLabel* instance_new_text_label(void) {
+constructor function TextLabel* instance_new_text_label(void) {
 	TextLabel *text_label = malloc(sizeof(*text_label));
 	if (!text_label)
 		return 0;
@@ -333,7 +333,7 @@ function TextLabel* instance_new_text_label(void) {
 	return text_label;
 }
 
-function UIRectangle* instance_new_ui_rectangle(void) {
+constructor function UIRectangle* instance_new_ui_rectangle(void) {
 	UIRectangle *rectangle = malloc(sizeof(*rectangle));
 	if (!rectangle)
 		return 0;
@@ -352,7 +352,7 @@ function UIRectangle* instance_new_ui_rectangle(void) {
 	return rectangle;
 }
 
-function Instance* instance_new_zeroed_any(size_t inst_size, const char *class_name) {
+constructor function Instance* instance_new_zeroed_any(size_t inst_size, const char *class_name) {
 	assert(inst_size > sizeof(Instance));
 	Instance *inst = (Instance*)malloc(inst_size);
 	assert(inst != NULL);
@@ -366,7 +366,7 @@ function Instance* instance_new_zeroed_any(size_t inst_size, const char *class_n
 	return inst;
 }
 
-function UIContainer* instance_new_ui_container(void) {
+constructor function UIContainer* instance_new_ui_container(void) {
 	UIContainer *ui_container = (UIContainer*)instance_new_zeroed_any(sizeof(UIContainer), "UIContainer");
 
 	ui_container->enabled = true;

@@ -51,7 +51,7 @@ typedef struct Scene {
 	ExtendsInstance;
 	bool        is_active; // READ-ONLY
 } Scene;
-Scene *instance_new_scene(void);
+constructor function Scene* instance_new_scene(void);
 
 typedef struct ImageSprite {
 	ExtendsInstance;
@@ -65,7 +65,7 @@ typedef struct ImageSprite {
 	TransformComponent transform;
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);
-int instance_image_sprite_load_image(ImageSprite *img_sprite);
+function int instance_image_sprite_load_image(ImageSprite *img_sprite);
 
 typedef struct TextLabel {
 	ExtendsInstance;
@@ -75,7 +75,7 @@ typedef struct TextLabel {
 	V4f         text_color;
 	TransformComponent transform;
 } TextLabel;
-TextLabel *instance_new_text_label(void);
+constructor function TextLabel* instance_new_text_label(void);
 
 typedef enum {
 	DirectionHorizontal,
@@ -87,7 +87,7 @@ typedef struct UIContainer {
 	bool enabled;
 	method(m_fadeOut, void)(Instance *self, float duration);
 } UIContainer;
-UIContainer *instance_new_ui_container(void);
+constructor function UIContainer* instance_new_ui_container(void);
 
 typedef struct UILayout {
 	ExtendsInstance;
