@@ -25,6 +25,7 @@ sources = [
 	'placeholder/world.c',
 	'placeholder/fonts.c',
 	'placeholder/instances/instances.c',
+	'placeholder/instances/services/*.c',
 	'placeholder/hashes.c',
 ]
 

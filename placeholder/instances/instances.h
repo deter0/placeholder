@@ -35,29 +35,33 @@ typedef struct TransformComponent {
 // ++ Instances
 
 // TODO(kay): Change class_name to an enum not a string
+// & (? `@constant MAX_CHILDREN`) The max number of children an `@class Instance` can have.
 #define MAX_CHILDREN 128*2
-#define ExtendsInstance // & The name of the Instance                                   
-												char             *name;                                          \
-												// & The class of the Instance, this is read-only and set in it's constructor.
-												char             *class_name;                                    \
-												// & The ID, maily for internal use.
-												size_t            id;                                            \
-												// & The Instance's parent.
-												struct Instance  *parent;                                        \
-												// & An array of the Instance's children. See `@constant MAX_CHILDREN`
-												struct Instance  *children[MAX_CHILDREN];                        \
-												// & The number of children in `@property Instance->children`
-												uint32_t          children_count;                                \
-												// & The draw function of the Instance, this can be NULL.
-												method           (m_draw, void)(struct Instance *self);          \
-												// & The debug draw (to draw debug info.) function of the Instance, this can be NULL.
+
+// & (? `@property Instance->name`)       			The name of the Instance                                   
+// & (? `@property Instance->class_name`) 			The class of the Instance, this is read-only and set in it's constructor. 
+// & (? `@property Instance->id`) 							The ID, maily for internal use.                             
+// & (? `@property Instance->parent`) 					The Instance's parent.
+// & (? `@property Instance->children`) 				An array of the Instance's children. See `@constant MAX_CHILDREN`
+// & (? `@property Instance->children_count`) 	The number of children in `@property Instance->children`
+// & (? `@property Instance->m_draw`) 					The draw function of the Instance, this can be NULL. 
+// & (? `@property Instance->m_debug_draw`) 		The debug draw (to draw debug info.) function of the Instance, this can be NULL. 
+// & (? `@property Instance->children_fi`) 			Mainly for internal use this is a `@class hashtable_t` used for `@function instance_find_first_child.`
+// & (? `@property Instance->enable_debugging`) Debugging flag, this will call `@property Instance->m_debugDraw` when it's render time.
+
+#define ExtendsInstance char             *name;                                         \ 
+												char             *class_name;                                   \
+												size_t            id;                                           \
+												struct Instance  *parent;                                       \
+												struct Instance  *children[MAX_CHILDREN];                       \
+												uint32_t          children_count;                               \
+												method           (m_draw, void)(struct Instance *self);         \
 												method           (m_debugDraw, void)(struct Instance *self);    \
-												// & Mainly for internal use this is a `@class hashtable_t` used for `@function instance_find_first_child.`
-												hashtable_t       children_fi;											             \
-												// & Debugging flag, this will call `@property Instance->m_debugDraw` when it's render time.
+												hashtable_t       children_fi;											            \
 												bool              enable_debugging
 
 
+// & (? `@class Instance`) !
 typedef struct Instance { ExtendsInstance; } Instance;
 
 typedef struct Scene {

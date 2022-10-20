@@ -10,14 +10,13 @@ typedef enum {
 	KS_HELD          = 0b00000010
 } e_keyState;
 
+// % (KeyDown, KeyPressed, KeyReleased, KeyUp) -> `@property InputService->m_getKeyState`
 typedef struct InputService {
-	ExtendsInstance;
-	// (KeyDown, KeyPressed, KeyReleased, KeyUp) -> InputService::m_getKeyState(char key_code) > e_keyState
+	ExtendsInstance;	
 	
-	// `(e_keyState & KS_DOWN) == 0` -> Key is being held
+	// & `(e_keyState & KS_DOWN) == 0` -> Key is being held
 	// => `(e_keyState & KS_RELEASED) == 0` -> Key was just released
-	// => ... see `e_keyState`
-	
+	// => ... see `@enum e_keyState`
 	public method(m_getKeyState, e_keyState)(char key_code);
 	
 	internal method(m_frameBegun, void)(void);
