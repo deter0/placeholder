@@ -18,6 +18,8 @@
 	NULL                                      \
 )
 
+#include <placeholder/instances/instance_methods.c>
+
 static size_t cur_id = 0;
 static function size_t gen_instance_id(void) {
 	cur_id += 1;
@@ -365,6 +367,10 @@ function Instance* instance_new_zeroed_any(size_t inst_size, const char *class_n
 }
 
 function UIContainer* instance_new_ui_container(void) {
-	UIContainer *ui_container = instance_new_zeroed_any(sizeof(UIContainer), "UIContainer");
+	UIContainer *ui_container = (UIContainer*)instance_new_zeroed_any(sizeof(UIContainer), "UIContainer");
+
+	ui_container->enabled = true;
+	ui_container->m_fadeOut = m_fadeOut;
 	
+	return ui_container;
 }

@@ -15,6 +15,7 @@
 #include <la/la.h>
 
 #include <placeholder/fonts.h>
+#include <placeholder/ff.h>
 
 // ++ Components
 
@@ -83,18 +84,19 @@ typedef enum {
 
 typedef struct UIContainer {
 	ExtendsInstance;
-	bool Enabled;
+	bool enabled;
+	method(m_fadeOut, void)(Instance *self, float duration);
 } UIContainer;
 UIContainer *instance_new_ui_container(void);
 
 typedef struct UILayout {
 	ExtendsInstance;
-	Direction LayoutDirection;
-	float PaddingL;	
-	float PaddingR;
-	float PaddingT;
-	float PaddingB;
-	bool  Active;
+	Direction layout_direction;
+	float paddingL;	
+	float paddingR;
+	float paddingT;
+	float paddingB;
+	bool  active;
 } UILayout;
 UIContainer *instance_new_ui_layout(void);
 
