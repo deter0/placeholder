@@ -36,13 +36,16 @@ typedef struct TransformComponent {
 
 // TODO(kay): Change class_name to an enum not a string
 #define MAX_CHILDREN 256
-#define ExtendsInstance char             *name;                   \
-												char             *class_name;             \
-												size_t            id;                     \
-												struct Instance  *parent;                 \
-												struct Instance  *children[MAX_CHILDREN]; \
-												uint32_t          children_count;         \
-												hashtable_t       children_fi											
+#define ExtendsInstance char             *name;                                          \
+												char             *class_name;                                    \
+												size_t            id;                                            \
+												struct Instance  *parent;                                        \
+												struct Instance  *children[MAX_CHILDREN];                        \
+												uint32_t          children_count;                                \
+												method           (m_draw, void)(struct Instance *self);          \
+												method           (m_debug_draw, void)(struct Instance *self);    \
+												hashtable_t       children_fi;											             \
+												bool              enable_debugging
 
 
 typedef struct Instance { ExtendsInstance; } Instance;
@@ -74,6 +77,8 @@ typedef struct TextLabel {
 	char       *text;
 	V4f         text_color;
 	TransformComponent transform;
+	
+	method(m_setText, void)(Instance *self, const char *fmt, ...);
 } TextLabel;
 constructor function TextLabel* instance_new_text_label(void);
 

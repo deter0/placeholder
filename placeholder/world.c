@@ -17,6 +17,7 @@
 Scene *main_scene = NULL;
 
 static void try_draw_instance(Instance *instance) {
+	/*
 	if (strcmp(instance->class_name, "TextLabel") == 0) {
 		TextLabel *promoted = (TextLabel*)instance;
 		al_draw_textf(
@@ -33,20 +34,20 @@ static void try_draw_instance(Instance *instance) {
 			assert(promoted->bm != NULL && promoted->bm_h != 0 && promoted->bm_w != 0);
 
 			al_draw_tinted_scaled_rotated_bitmap_region(
-				promoted->bm, 													        // The bitmap
-				0,                 											        // Source X
-				0,                 											        // Source Y
-				promoted->bm_w, 												        // Source W
-				promoted->bm_h, 												        // Source H
-				al_map_rgb(255, 255, 255),                      // Tint
-				promoted->anchor_point.x,							        // Center X
+				promoted->bm, 													       // The bitmap
+				0,                 											       // Source X
+				0,                 											       // Source Y
+				promoted->bm_w, 												       // Source W
+				promoted->bm_h, 												       // Source H
+				al_map_rgb(255, 255, 255),                     // Tint
+				promoted->anchor_point.x,							         // Center X
 				promoted->anchor_point.y,                      // Center Y
 				promoted->transform.position.x,                // X
 				promoted->transform.position.y,                // Y
 				promoted->transform.scale.x / promoted->bm_w,  // Scale X
 				promoted->transform.scale.y / promoted->bm_h,  // Scale Y
-				0.0f,                                           // Rotation
-				0                                               // Flags
+				0.0f,                                          // Rotation
+				0                                              // Flags
 			);
 		} else {
 			al_draw_filled_rectangle(
@@ -74,6 +75,14 @@ static void try_draw_instance(Instance *instance) {
 			)
 		);
 	}
+	*/
+	if (instance->m_draw != NULL) {
+		instance->m_draw(instance);
+	}
+
+	if (instance->enable_debugging && instance->m_debug_draw != NULL) {
+		instance->m_debug_draw(instance);
+	}
 	
 	// plui_begin_topbar();
 }
@@ -92,36 +101,7 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		TextLabel *hello_world = instance_new_text_label();
 		hello_world->text = strdup("Hello, World!");
 		
-		TextLabel *other_font = instance_new_text_label();
-		other_font->text = strdup("This is another cool font");
-		other_font->font = Almendra;
-		other_font->transform.position.x = 500;
-		// instance_set_name(other_font, "OtherFont");
-		
-		TextLabel *grace = instance_new_text_label();
-		grace->transform.position.x = 250;
-		grace->text = strdup("hi grace!!!!!!!!!!!!!!!!!!!!!heeeeeeeeeeeeey");
-		grace->font = Almendra;
-		grace->font_size = 64;
-		// instance_set_name(grace, "GRACE");
-		
-		// plui_set_scene(main_scene);
-		
-		ImageSprite *test = instance_new_image_sprite();
-		test->image_path = strdup("../assets/gfx/default_character.png");
-		test->transform.position.x = 250;
-		test->transform.scale.x = 500;
-		test->transform.scale.y = 500;
-		instance_image_sprite_load_image(test);
-		
-		UIRectangle *rect = instance_new_ui_rectangle();
-		rect->color.w = 0.0f;
-
-		instance_set_parent((Instance*)rect,        (Instance*)main_scene);
-		instance_set_parent((Instance*)test,        (Instance*)main_scene);
 		instance_set_parent((Instance*)hello_world, (Instance*)main_scene);
-		instance_set_parent((Instance*)other_font,  (Instance*)main_scene);
-		instance_set_parent((Instance*)grace,       (Instance*)main_scene);
 	}
 	assert(main_scene != NULL);
 	al_clear_to_color(al_map_rgb(0, 0, 0));
