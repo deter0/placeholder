@@ -19,7 +19,8 @@
 // ++ Components
 
 typedef enum ComponentType {
-	component_default
+	componentDefault,
+	componentTransform
 } ComponentType;
 
 typedef struct TransformComponent {
@@ -75,18 +76,41 @@ typedef struct TextLabel {
 } TextLabel;
 TextLabel *instance_new_text_label(void);
 
-typedef struct Rectangle {
+typedef enum {
+	DirectionHorizontal,
+	DirectionVertical
+} Direction;
+
+typedef struct UIContainer {
+	ExtendsInstance;
+	bool Enabled;
+} UIContainer;
+UIContainer *instance_new_ui_container(void);
+
+typedef struct UILayout {
+	ExtendsInstance;
+	Direction LayoutDirection;
+	float PaddingL;	
+	float PaddingR;
+	float PaddingT;
+	float PaddingB;
+	bool  Active;
+} UILayout;
+UIContainer *instance_new_ui_layout(void);
+
+typedef struct UIRectangle {
 	ExtendsInstance;
 	TransformComponent transform;
 	V4f                color;
-} Rectangle;
-Rectangle *instance_new_rectangle(void);
+} UIRectangle;
+UIRectangle *instance_new_ui_rectangle(void);
 
 // -- Instances
 
 
 // ++ Basic Functions
 
+Instance *instance_new_zeroed_any(size_t inst_size);
 int instance_set_parent(Instance* subject, Instance *new_parent);
 int instance_destroy(Instance *subject);
 // `new_name` will be duplicated

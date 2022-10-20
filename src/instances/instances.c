@@ -328,14 +328,14 @@ TextLabel *instance_new_text_label(void) {
 	return text_label;
 }
 
-Rectangle *instance_new_rectangle(void) {
-	Rectangle *rectangle = malloc(sizeof(*rectangle));
+UIRectangle *instance_new_ui_rectangle(void) {
+	UIRectangle *rectangle = malloc(sizeof(*rectangle));
 	if (!rectangle)
 		return 0;
 	memset(rectangle, 0, sizeof(*rectangle));
 	
-	rectangle->class_name = strdup("Rectangle");
-	rectangle->name       = strdup("Rectangle");
+	rectangle->class_name = strdup("UIRectangle");
+	rectangle->name       = strdup("UIRectangle");
 	rectangle->id 				 = gen_instance_id();
 	rectangle->parent     = NULL;
 	
@@ -345,5 +345,15 @@ Rectangle *instance_new_rectangle(void) {
 	rectangle->transform.scale = v2ff(100.f);
 
 	return rectangle;
+}
+
+Instance *instance_new_zeroed_any(size_t inst_size) {
+	assert(inst_size > sizeof(Instance));
+	Instance *inst = (Instance*)malloc(inst_size);
+	assert(inst != NULL);
+	
+	inst->id = gen_instance_id();
+
+	return inst;
 }
 

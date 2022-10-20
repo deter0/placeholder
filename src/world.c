@@ -10,6 +10,8 @@
 #include "fonts.h"
 #include "world.h"
 
+#include "plui/plui.h"
+
 #define SCALE 4
 
 Scene *main_scene = NULL;
@@ -57,8 +59,8 @@ static void try_draw_instance(Instance *instance) {
 				al_map_rgb(255, 0, 220)
 			);
 		}
-	} else if (strcmp(instance->class_name, "Rectangle") == 0) {
-		Rectangle *promoted = (Rectangle*)instance;
+	} else if (strcmp(instance->class_name, "UIRectangle") == 0) {
+		UIRectangle *promoted = (UIRectangle*)instance;
 		al_draw_filled_rectangle(
 			promoted->transform.position.x,
 			promoted->transform.position.y,
@@ -72,6 +74,8 @@ static void try_draw_instance(Instance *instance) {
 			)
 		);
 	}
+	
+	plui_begin_topbar();
 }
 
 static void draw_scene_recursive(Instance *scene) {
@@ -101,6 +105,8 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		grace->font_size = 64;
 		// instance_set_name(grace, "GRACE");
 		
+		plui_set_scene(main_scene);
+		
 		ImageSprite *test = instance_new_image_sprite();
 		test->image_path = strdup("../assets/gfx/default_character.png");
 		test->transform.position.x = 250;
@@ -108,7 +114,8 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		test->transform.scale.y = 500;
 		instance_image_sprite_load_image(test);
 		
-		Rectangle *rect = instance_new_rectangle();
+		UIRectangle *rect = instance_new_ui_rectangle();
+		rect->color.w = 0.0f;
 
 		instance_set_parent((Instance*)rect,        (Instance*)main_scene);
 		instance_set_parent((Instance*)test,        (Instance*)main_scene);
@@ -120,5 +127,7 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	draw_scene_recursive((Instance*)main_scene);
+	
+	plui_end();
 }
 

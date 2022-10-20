@@ -21,6 +21,7 @@ sources = [
 	'src/world.c',
 	'src/fonts.c',
 	'src/instances/instances.c',
+	'src/plui/plui.c',
 	'src/hashes.c',
 ]
 
