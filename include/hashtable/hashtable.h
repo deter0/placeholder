@@ -10,6 +10,8 @@ Do this:
 before you include this file in *one* C/C++ file to create the implementation.
 */
 
+#include <stdint.h>
+
 #ifndef hashtable_h
 #define hashtable_h
 

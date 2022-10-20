@@ -14,7 +14,7 @@
 
 #include <la/la.h>
 
-#include "../fonts.h"
+#include <placeholder/fonts.h>
 
 // ++ Components
 
@@ -110,7 +110,7 @@ UIRectangle *instance_new_ui_rectangle(void);
 
 // ++ Basic Functions
 
-Instance *instance_new_zeroed_any(size_t inst_size);
+Instance *instance_new_zeroed_any(size_t inst_size, const char *class_name);
 int instance_set_parent(Instance* subject, Instance *new_parent);
 int instance_destroy(Instance *subject);
 // `new_name` will be duplicated

@@ -3,7 +3,11 @@ project('placeholder', 'c')
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required : true)
 
-inc_dirs = include_directories('libs', 'include')
+inc_dirs = include_directories(
+	'libs',
+	'include',
+	'placeholder'
+)
 
 dependencies = [
 	dependency('allegro-5'),
@@ -15,14 +19,13 @@ dependencies = [
 ]
 
 sources = [
-	'src/main.c',
-	'src/characters.c',
-	'src/all_characters.c',
-	'src/world.c',
-	'src/fonts.c',
-	'src/instances/instances.c',
-	'src/plui/plui.c',
-	'src/hashes.c',
+	'placeholder/main.c',
+	'placeholder/characters.c',
+	'placeholder/all_characters.c',
+	'placeholder/world.c',
+	'placeholder/fonts.c',
+	'placeholder/instances/instances.c',
+	'placeholder/hashes.c',
 ]
 
 executable('placeholder', sources : sources, dependencies : dependencies, include_directories : inc_dirs)

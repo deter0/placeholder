@@ -2,7 +2,7 @@
 #include <allegro5/bitmap.h>
 #include <err.h>
 
-#include "characters.h"
+#include <placeholder/characters.h>
 
 void load_characters(Character *characters_to_load) {
 	for (size_t i = 0; 1; i++) {
@@ -18,6 +18,7 @@ void load_characters(Character *characters_to_load) {
 		if (character->top_down_bm_path == NULL) {
 			warnx("Failed to load top down bitmap for character: %s\n", character->name);
 		} else {
+			assert(al_is_bitmap_locked(top_down_bm) != true);
 			character->top_down.bm_w = al_get_bitmap_width(top_down_bm);
 			character->top_down.bm_h = al_get_bitmap_height(top_down_bm);
 			

@@ -5,12 +5,12 @@
 
 #include <stdio.h>
 
-#include "characters.h"
-#include "instances/instances.h"
-#include "fonts.h"
-#include "world.h"
+#include <placeholder/characters.h>
+#include <placeholder/instances/instances.h>
+#include <placeholder/fonts.h>
+#include <placeholder/world.h>
 
-#include "plui/plui.h"
+// #include "plui/plui.h"
 
 #define SCALE 4
 
@@ -75,7 +75,7 @@ static void try_draw_instance(Instance *instance) {
 		);
 	}
 	
-	plui_begin_topbar();
+	// plui_begin_topbar();
 }
 
 static void draw_scene_recursive(Instance *scene) {
@@ -105,7 +105,7 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		grace->font_size = 64;
 		// instance_set_name(grace, "GRACE");
 		
-		plui_set_scene(main_scene);
+		// plui_set_scene(main_scene);
 		
 		ImageSprite *test = instance_new_image_sprite();
 		test->image_path = strdup("../assets/gfx/default_character.png");
@@ -127,7 +127,5 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	draw_scene_recursive((Instance*)main_scene);
-	
-	plui_end();
 }
 

@@ -13,15 +13,14 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "instances/instances.h"
 
-#include "characters.h"
+#include <placeholder/instances/instances.h>
+#include <placeholder/characters.h>
+#include <placeholder/world.h>
+#include <placeholder/fonts.h>
 
 // #define ALL_CHARACTERS_IMPL
 // #include "all_characters.c"
-
-#include "world.h"
-#include "fonts.h"
 
 #define HASHTABLE_IMPLEMENTATION
 #include "hashtable/hashtable.h"

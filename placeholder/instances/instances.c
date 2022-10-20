@@ -1,11 +1,14 @@
-#include "instances.h"
 #include <string.h>
 #include <err.h>
 
 #define LA_IMPLEMENTATION
 #include <la/la.h>
+#undef LA_IMPLEMENTATION
 
 #include <hashtable/hashtable.h>
+
+#include <placeholder/instances/instances.h>
+#include <placeholder/ff.h>
 
 #define init_children_fi(X) hashtable_init( \
 	&((X)->children_fi),                      \
@@ -16,13 +19,13 @@
 )
 
 static size_t cur_id = 0;
-static size_t gen_instance_id(void) {
+static function size_t gen_instance_id(void) {
 	cur_id += 1;
 	return cur_id;
 }
 
 // ! Be sure to free
-static char *get_instance_debug_info(Instance *instance) {
+static function char* get_instance_debug_info(Instance *instance) {
 	char *buffer = (char*)malloc(512);
 
 	assert(buffer);
@@ -33,7 +36,7 @@ static char *get_instance_debug_info(Instance *instance) {
 	return buffer;
 }
 
-int instance_destroy(Instance *subject) {
+function int instance_destroy(Instance *subject) {
 	assert(subject != NULL);
 
 	for (size_t i = 0; i < subject->children_count; i++) {
@@ -62,7 +65,7 @@ int instance_destroy(Instance *subject) {
 	return 0;
 }
 
-Instance *instance_find_first_child(Instance *subject, const char *child_name) {
+function Instance* instance_find_first_child(Instance *subject, const char *child_name) {
 	if (subject == NULL) {
 		errx(1, "instance_find_first_child subject instance is NULL\n");
 	}
@@ -89,7 +92,7 @@ Instance *instance_find_first_child(Instance *subject, const char *child_name) {
 	return NULL;
 }
 
-int instance_set_name(Instance *subject, const char *new_name) {
+function int instance_set_name(Instance *subject, const char *new_name) {
 	if (subject->parent != NULL) {
 		Instance **possible_find = hashtable_find(
 			&subject->parent->children_fi,
@@ -122,7 +125,7 @@ int instance_set_name(Instance *subject, const char *new_name) {
 }
 
 // ! FIXME(kay): Instance with the same name crashes (FIXED)
-int instance_set_parent(Instance* subject, Instance *new_parent) {
+function int instance_set_parent(Instance* subject, Instance *new_parent) {
 	Instance *old_parent = subject->parent;
 	if (!(subject != NULL)) {
 		errx(1, "instance_set_parent subject instance is NULL\n");
@@ -206,7 +209,7 @@ int instance_set_parent(Instance* subject, Instance *new_parent) {
 	return 0;
 }
 
-Scene *instance_new_scene(void) {
+function Scene* instance_new_scene(void) {
 	Scene *scene = malloc(sizeof(*scene));
 	if (!scene)
 		return NULL;
@@ -230,7 +233,7 @@ Scene *instance_new_scene(void) {
 	return scene;
 }
 
-ImageSprite *instance_new_image_sprite(void) {
+function ImageSprite* instance_new_image_sprite(void) {
 	ImageSprite *image_sprite = malloc(sizeof(*image_sprite));
 	if (!image_sprite)
 		return NULL;
@@ -252,7 +255,7 @@ ImageSprite *instance_new_image_sprite(void) {
 	return image_sprite;
 }
 
-int instance_image_sprite_load_image(ImageSprite *img_sprite) {
+function int instance_image_sprite_load_image(ImageSprite *img_sprite) {
 	if (img_sprite->image_is_loaded == false) {
 		if (img_sprite->bm != NULL) {
 			al_destroy_bitmap(img_sprite->bm);
@@ -308,7 +311,7 @@ FontObject *instance_new_font_object(void) {
 	return font_object;
 }
 */
-TextLabel *instance_new_text_label(void) {
+function TextLabel* instance_new_text_label(void) {
 	TextLabel *text_label = malloc(sizeof(*text_label));
 	if (!text_label)
 		return 0;
@@ -328,7 +331,7 @@ TextLabel *instance_new_text_label(void) {
 	return text_label;
 }
 
-UIRectangle *instance_new_ui_rectangle(void) {
+function UIRectangle* instance_new_ui_rectangle(void) {
 	UIRectangle *rectangle = malloc(sizeof(*rectangle));
 	if (!rectangle)
 		return 0;
@@ -347,13 +350,21 @@ UIRectangle *instance_new_ui_rectangle(void) {
 	return rectangle;
 }
 
-Instance *instance_new_zeroed_any(size_t inst_size) {
+function Instance* instance_new_zeroed_any(size_t inst_size, const char *class_name) {
 	assert(inst_size > sizeof(Instance));
 	Instance *inst = (Instance*)malloc(inst_size);
 	assert(inst != NULL);
 	
+	init_children_fi(inst);
+	
+	inst->name = strdup(class_name);
+	inst->class_name = strdup(class_name);
 	inst->id = gen_instance_id();
 
 	return inst;
 }
 
+function UIContainer* instance_new_ui_container(void) {
+	UIContainer *ui_container = instance_new_zeroed_any(sizeof(UIContainer), "UIContainer");
+	
+}

@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <err.h>
 
-#include "fonts.h"
+#include <placeholder/fonts.h>
 
 #define DEBUG_FONTS
 
