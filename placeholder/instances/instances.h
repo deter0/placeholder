@@ -127,10 +127,10 @@ Instance *instance_find_first_child(Instance *subject, const char *child_name);
 
 // -- Basic Functions
 
-// ++ Serivces ++
+// ++ Services ++
 
 #include <placeholder/instances/services/input_service.h>
 
-// -- Serivces --
+// -- Services --
 
 
