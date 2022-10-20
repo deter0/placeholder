@@ -324,7 +324,7 @@ constructor function TextLabel* instance_new_text_label(void) {
 	text_label->id 				   = gen_instance_id();
 	text_label->parent       = NULL;
 	text_label->m_draw       = draw_text_label;
-	text_label->m_debug_draw = debug_draw_text_label;
+	text_label->m_debugDraw = debug_draw_text_label;
 	
 	init_children_fi(text_label);
 	

@@ -80,8 +80,8 @@ static void try_draw_instance(Instance *instance) {
 		instance->m_draw(instance);
 	}
 
-	if (instance->enable_debugging && instance->m_debug_draw != NULL) {
-		instance->m_debug_draw(instance);
+	if (instance->enable_debugging && instance->m_debugDraw != NULL) {
+		instance->m_debugDraw(instance);
 	}
 	
 	// plui_begin_topbar();
