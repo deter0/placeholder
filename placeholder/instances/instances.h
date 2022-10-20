@@ -35,7 +35,7 @@ typedef struct TransformComponent {
 // ++ Instances
 
 // TODO(kay): Change class_name to an enum not a string
-#define MAX_CHILDREN 256
+#define MAX_CHILDREN 128*2
 #define ExtendsInstance char             *name;                                          \
 												char             *class_name;                                    \
 												size_t            id;                                            \
@@ -126,3 +126,11 @@ int instance_set_name(Instance *subject, const char *new_name);
 Instance *instance_find_first_child(Instance *subject, const char *child_name);
 
 // -- Basic Functions
+
+// ++ Serivces ++
+
+#include <placeholder/instances/services/input_service.h>
+
+// -- Serivces --
+
+
