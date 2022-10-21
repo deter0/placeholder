@@ -204,7 +204,9 @@ int main() {
                 al_acknowledge_resize(display);
             } break;
             default: {
-                warnx("Unhandled event: %d\n", event.type);
+                int shut_up = 1;
+                if (!shut_up)
+                    warnx("Unhandled event: %d\n", event.type);
             } break;
         }
     }    

@@ -10,6 +10,7 @@
 #include <placeholder/fonts.h>
 #include <placeholder/world.h>
 #include <placeholder/ff.h>
+#include <placeholder/util.h>
 
 // #include "plui/plui.h"
 
@@ -111,6 +112,20 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 
 	draw_scene_recursive((Instance*)main_scene);
 	
-	printf("%d\n", main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, 'd'));
+	e_keyState d_state = main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, ALLEGRO_KEY_D);
+	
+	if ((d_state & KS_JUST_PRESSED) != 0) {
+		printf("Key D Pressed\n");
+	}
+	if ((d_state & (KS_JUST_PRESSED | KS_HELD)) != 0) {
+		printf("Key D Held\n");
+	}
+	if ((d_state & KS_JUST_RELEASED) != 0) {
+		printf("Key D Released\n");
+	}
+	if (ks_just_pressed(d_state)) {
+		printf("Key D Pressed IF\n");
+	}
+	// printf("%d\n", d_state);
 }
 

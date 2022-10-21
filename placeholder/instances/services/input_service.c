@@ -2,19 +2,19 @@
 #include <placeholder/instances/services/input_service.h>
 #include <placeholder/ff.h>
 
-private function m_getKeyState(InputService *self, char key_code) {
-	if (al_key_down(&self->now_state, (int)key_code) == 1) {
-		if (al_key_down(&self->last_state, (int)key_code) == 1) {
+private function e_keyState m_getKeyState(InputService *self, int key_code) {
+	if (al_key_down(&self->now_state, key_code) == 1) {
+		if (al_key_down(&self->last_state, key_code) == 1) {
 			return KS_HELD;
 		}
 		return KS_JUST_PRESSED;
-	} else if (al_key_down(&self->last_state, (int)key_code) == 1) {
+	} else if (al_key_down(&self->last_state, key_code) == 1) {
 		return KS_JUST_RELEASED;
 	}
 	return KS_NOT_PRESSED;
 }
 
-private function m_frameBegun(InputService *self) {
+private function void m_frameBegun(InputService *self) {
 	self->last_state = self->now_state;
 	al_get_keyboard_state(&self->now_state);
 }

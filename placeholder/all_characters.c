@@ -14,5 +14,5 @@ static struct Character AllCharacters[] = {
 };
 
 Character* get_all_characters(void) {
-	return &AllCharacters;
+	return (Character*)(&AllCharacters);
 }

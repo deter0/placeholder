@@ -2,6 +2,7 @@
 #include <allegro5/bitmap.h>
 #include <err.h>
 
+#include <stdio.h>
 #include <placeholder/characters.h>
 
 void load_characters(Character *characters_to_load) {

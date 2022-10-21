@@ -3,6 +3,9 @@ project('placeholder', 'c')
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required : true)
 
+add_global_arguments('-Wno-unused-function', language : ['c'])
+add_global_arguments('-Wno-unused-variable', language : ['c'])
+
 inc_dirs = include_directories(
 	'libs',
 	'include',
@@ -27,6 +30,7 @@ sources = [
 	'placeholder/instances/instances.c',
 	'placeholder/instances/services/input_service.c',
 	'placeholder/hashes.c',
+	'placeholder/util.c'
 ]
 
 executable('placeholder', sources : sources, dependencies : dependencies, include_directories : inc_dirs)

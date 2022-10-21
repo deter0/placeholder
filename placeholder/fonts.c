@@ -34,7 +34,6 @@ static const char *font_names[] = {
 	"Alegreya",
 	"Almendra",
 };
-static ALLEGRO_FONT *fonts_fi[FONT_LAST_INVALID] = {0};
 
 static_assert((sizeof(font_paths)/sizeof(font_paths[0])) == FONT_LAST_INVALID);
 static_assert((sizeof(font_names)/sizeof(font_names[0])) == FONT_LAST_INVALID);
@@ -46,6 +45,7 @@ int fonts_load_defaults(void) {
 		printf("[DEBUG] Loaded font `%s` (at `%s`)\n", name, path);
 		fonts_create_font(name, path);
 	}
+	return 0;
 }
 const char *get_font(enum Font font) {
 	assert(font < FONT_LAST_INVALID);
@@ -79,7 +79,7 @@ int fonts_create_font(const char *name, const char *font_file) {
 ALLEGRO_FONT **fonts_get_fonts(const char *name) { // TODO: Return a default font
 	assert(FontsHTInit != false);
 
-	ALLEGRO_FONT ***retrieved_fonts = (ALLEGRO_FONT**)hashtable_find(
+	ALLEGRO_FONT ***retrieved_fonts = (ALLEGRO_FONT***)hashtable_find(
 		&Fonts,
 		hash_str(name),
 		name
@@ -119,7 +119,7 @@ ALLEGRO_FONT *fonts_get_font(const char *name, uint32_t size) {
 int fonts_delete_font(const char *name) {
 	assert(FontsHTInit != false);
 
-	ALLEGRO_FONT ***fonts_ptr = fonts_get_fonts(name);
+	ALLEGRO_FONT ***fonts_ptr = (ALLEGRO_FONT***)fonts_get_fonts(name);
 	if (fonts_ptr == NULL || *fonts_ptr == NULL) {
 		warnx("Error deleting font most likely more information above.\n");
 		return -1;

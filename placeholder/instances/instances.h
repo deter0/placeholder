@@ -32,13 +32,6 @@ typedef struct TransformComponent {
 
 // -- Components
 
-// ++ Services ++
-
-#include <placeholder/instances/services/input_service.h>
-
-// -- Services --
-
-
 // ++ Instances
 
 // TODO(kay): Change class_name to an enum not a string.
@@ -66,6 +59,14 @@ typedef struct TransformComponent {
                          method           (m_debugDraw, void)(struct Instance *self);    \
                          hashtable_t       children_fi;											             \
                          bool              enable_debugging
+
+
+
+// ++ Services ++
+
+#include <placeholder/instances/services/input_service.h>
+
+// -- Services --
 
 
 // & (? `@class Instance`) !
