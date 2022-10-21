@@ -9,6 +9,7 @@
 #include <placeholder/instances/instances.h>
 #include <placeholder/fonts.h>
 #include <placeholder/world.h>
+#include <placeholder/ff.h>
 
 // #include "plui/plui.h"
 
@@ -104,8 +105,12 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		instance_set_parent((Instance*)hello_world, (Instance*)main_scene);
 	}
 	assert(main_scene != NULL);
+	main_scene->s_inputService->m_frameBegun(main_scene->s_inputService);
+
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	draw_scene_recursive((Instance*)main_scene);
+	
+	printf("%d\n", main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, 'd'));
 }
 

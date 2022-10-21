@@ -8,6 +8,7 @@
 #include <hashtable/hashtable.h>
 
 #include <placeholder/instances/instances.h>
+#include <placeholder/instances/services/input_service.h>
 #include <placeholder/ff.h>
 
 #define init_children_fi(X) hashtable_init( \
@@ -231,6 +232,9 @@ constructor function Scene* instance_new_scene(void) {
 	// );
 	init_children_fi(scene);
 	
+	// Create Services
+	scene->s_inputService = service_create_input_service();
+	
 	scene->is_active = false;
 	return scene;
 }
@@ -323,8 +327,8 @@ constructor function TextLabel* instance_new_text_label(void) {
 	text_label->name         = strdup("TextLabel");
 	text_label->id 				   = gen_instance_id();
 	text_label->parent       = NULL;
-	text_label->m_draw       = draw_text_label;
-	text_label->m_debugDraw = debug_draw_text_label;
+	text_label->m_draw       = (void (*)(Instance*))draw_text_label;
+	text_label->m_debugDraw  = (void (*)(Instance*))debug_draw_text_label;
 	
 	init_children_fi(text_label);
 	

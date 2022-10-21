@@ -1,3 +1,4 @@
+// Function Flags
 #pragma once
 
 #define function

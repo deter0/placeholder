@@ -2,23 +2,21 @@
 #include <placeholder/instances/services/input_service.h>
 #include <placeholder/ff.h>
 
-private ALLEGRO_KEYBOARD_STATE last_state = {0}, now_state = {0};
-
-private function m_getKeyState(char key_code) {
-	if (al_key_down(&now_state, (int)key_code) == 1) {
-		if (al_key_down(&last_state, (int)key_code) == 1) {
+private function m_getKeyState(InputService *self, char key_code) {
+	if (al_key_down(&self->now_state, (int)key_code) == 1) {
+		if (al_key_down(&self->last_state, (int)key_code) == 1) {
 			return KS_HELD;
 		}
 		return KS_JUST_PRESSED;
-	} else if (al_key_down(&last_state, (int)key_code) == 1) {
+	} else if (al_key_down(&self->last_state, (int)key_code) == 1) {
 		return KS_JUST_RELEASED;
 	}
 	return KS_NOT_PRESSED;
 }
 
-private function m_frameBegun() {
-	last_state = now_state;
-	al_get_keyboard_state(&now_state);
+private function m_frameBegun(InputService *self) {
+	self->last_state = self->now_state;
+	al_get_keyboard_state(&self->now_state);
 }
 
 constructor function InputService* service_create_input_service(void) {

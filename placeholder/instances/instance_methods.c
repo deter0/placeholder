@@ -1,5 +1,3 @@
-#pragma once
-
 #include <placeholder/ff.h>
 #include <placeholder/instances/instances.h>
 

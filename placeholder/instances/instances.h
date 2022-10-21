@@ -20,21 +20,28 @@
 // ++ Components
 
 typedef enum ComponentType {
-	componentDefault,
-	componentTransform
+  componentDefault,
+  componentTransform
 } ComponentType;
 
 typedef struct TransformComponent {
-	V2f   position;
-	V2f   scale;
-	float rotation;
+  V2f   position;
+  V2f   scale;
+  float rotation;
 } TransformComponent;
 
 // -- Components
 
+// ++ Services ++
+
+#include <placeholder/instances/services/input_service.h>
+
+// -- Services --
+
+
 // ++ Instances
 
-// TODO(kay): Change class_name to an enum not a string
+// TODO(kay): Change class_name to an enum not a string.
 // & (? `@constant MAX_CHILDREN`) The max number of children an `@class Instance` can have.
 #define MAX_CHILDREN 128*2
 
@@ -49,80 +56,81 @@ typedef struct TransformComponent {
 // & (? `@property Instance->children_fi`) 			Mainly for internal use this is a `@class hashtable_t` used for `@function instance_find_first_child.`
 // & (? `@property Instance->enable_debugging`) Debugging flag, this will call `@property Instance->m_debugDraw` when it's render time.
 
-#define ExtendsInstance char             *name;                                         \ 
-												char             *class_name;                                   \
-												size_t            id;                                           \
-												struct Instance  *parent;                                       \
-												struct Instance  *children[MAX_CHILDREN];                       \
-												uint32_t          children_count;                               \
-												method           (m_draw, void)(struct Instance *self);         \
-												method           (m_debugDraw, void)(struct Instance *self);    \
-												hashtable_t       children_fi;											            \
-												bool              enable_debugging
+#define Extends_Instance char            *name;                                          \
+                         char             *class_name;                                   \
+                         size_t            id;                                           \
+                         struct Instance  *parent;                                       \
+                         struct Instance  *children[MAX_CHILDREN];                       \
+                         uint32_t          children_count;                               \
+                         method           (m_draw, void)(struct Instance *self);         \
+                         method           (m_debugDraw, void)(struct Instance *self);    \
+                         hashtable_t       children_fi;											             \
+                         bool              enable_debugging
 
 
 // & (? `@class Instance`) !
-typedef struct Instance { ExtendsInstance; } Instance;
+typedef struct Instance { Extends_Instance; } Instance;
 
 typedef struct Scene {
-	ExtendsInstance;
-	readOnly bool        is_active;
+  Extends_Instance;
+  readOnly bool          is_active;
+  readOnly InputService *s_inputService;
 } Scene;
 constructor function Scene* instance_new_scene(void);
 
 typedef struct ImageSprite {
-	ExtendsInstance;
-	char           *image_path;
-	bool            image_is_loaded; // READ-ONLY
-	ALLEGRO_BITMAP *bm;
-	uint32_t        bm_w;
-	uint32_t        bm_h;
-	
-	V2f             anchor_point; // 0 to 1
-	TransformComponent transform;
+  Extends_Instance;
+  char           *image_path;
+  bool            image_is_loaded; // READ-ONLY
+  ALLEGRO_BITMAP *bm;
+  uint32_t        bm_w;
+  uint32_t        bm_h;
+  
+  V2f             anchor_point; // 0 to 1
+  TransformComponent transform;
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);
 function int instance_image_sprite_load_image(ImageSprite *img_sprite);
 
 typedef struct TextLabel {
-	ExtendsInstance;
-	enum Font   font;
-	uint32_t    font_size;
-	char       *text;
-	V4f         text_color;
-	TransformComponent transform;
-	
-	method(m_setText, void)(Instance *self, const char *fmt, ...);
+  Extends_Instance;
+  enum Font   font;
+  uint32_t    font_size;
+  char       *text;
+  V4f         text_color;
+  TransformComponent transform;
+  
+  method(m_setText, void)(Instance *self, const char *fmt, ...);
 } TextLabel;
 constructor function TextLabel* instance_new_text_label(void);
 
 typedef enum {
-	DirectionHorizontal,
-	DirectionVertical
+  DirectionHorizontal,
+  DirectionVertical
 } Direction;
 
 typedef struct UIContainer {
-	ExtendsInstance;
-	bool enabled;
-	method(m_fadeOut, void)(Instance *self, float duration);
+  Extends_Instance;
+  bool enabled;
+  method(m_fadeOut, void)(Instance *self, float duration);
 } UIContainer;
 constructor function UIContainer* instance_new_ui_container(void);
 
 typedef struct UILayout {
-	ExtendsInstance;
-	Direction layout_direction;
-	float paddingL;	
-	float paddingR;
-	float paddingT;
-	float paddingB;
-	bool  active;
+  Extends_Instance;
+  Direction layout_direction;
+  float paddingL;	
+  float paddingR;
+  float paddingT;
+  float paddingB;
+  bool  active;
 } UILayout;
 constructor function UIContainer* instance_new_ui_layout(void);
 
 typedef struct UIRectangle {
-	ExtendsInstance;
-	TransformComponent transform;
-	V4f                color;
+  Extends_Instance;
+  TransformComponent transform;
+  V4f                color;
 } UIRectangle;
 constructor function UIRectangle* instance_new_ui_rectangle(void);
 
@@ -153,16 +161,8 @@ int instance_set_name(Instance *subject, const char *new_name);
 
 // & Find's a child that `@param object` has by it's name (`@param child_name`)
 // => Note: If a child with that name does not exist, it will return `NULL`
-// => Note: If there are multiple children with the same name it will return the one registered in `@property Instance->children_fi`. \\
+// => Note: If there are multiple children with the same name it will return the one registered in `@property Instance->children_fi`. 
 // In other words the most recent `@class Instance` to has changed it's name or set child of `@param subject`. 
 Instance *instance_find_first_child(Instance *subject, const char *child_name);
 
 // -- Basic Functions
-
-// ++ Services ++
-
-#include <placeholder/instances/services/input_service.h>
-
-// -- Services --
-
-
