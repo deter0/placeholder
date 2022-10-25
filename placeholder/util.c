@@ -12,3 +12,7 @@ bool ks_just_released(e_keyState ks) {
 bool ks_is_down(e_keyState ks) {
   return (ks & (KS_JUST_PRESSED | KS_HELD)) != 0;
 }
+bool ks_is_not_pressed(e_keyState ks) {
+  return (ks & KS_NOT_PRESSED) != 0;
+}
+

@@ -44,7 +44,7 @@ private function void draw_text_label(TextLabel *text_label) {
 			text_label->text_color.z, // B
 			text_label->text_color.w  // A
 		),
-		text_label->transform.position.x, text_label->transform.position.y,
+		text_label->transform.position.x, text_label->transform.position.y - (text_label->font_size * 0.25f - 2),
 		0,
 		"%s",
 		text_label->text

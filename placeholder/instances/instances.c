@@ -337,7 +337,7 @@ constructor function TextLabel* instance_new_text_label(void) {
 	text_label->text_color = v4ff(1.f);
 	text_label->text = strdup("Hello, World!");
 
-	text_label->enable_debugging = true;
+	text_label->enable_debugging = false;
 
 	return text_label;
 }

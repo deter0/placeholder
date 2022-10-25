@@ -102,6 +102,8 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 
 		TextLabel *hello_world = instance_new_text_label();
 		hello_world->text = strdup("Hello, World!");
+		hello_world->font = Almendra;
+		hello_world->font_size = 54;
 		
 		instance_set_parent((Instance*)hello_world, (Instance*)main_scene);
 	}

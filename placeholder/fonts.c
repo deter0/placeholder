@@ -22,7 +22,7 @@ static bool        FontsHTInit = false; // Fonts hashtable has been initted
 static const uint32_t font_sizes[] = {
 	8, 10, 11, 12, 13, 14, 16, 18,
 	20, 24, 28, 30, 32, 36, 48, 52, 54,
-	62, 74, 86, 92, 104, 112, 126
+	62, 64, 74, 86, 92, 104, 112, 126
 };
 static const uint32_t num_font_sizes = sizeof(font_sizes)/sizeof(font_sizes[0]);
 
