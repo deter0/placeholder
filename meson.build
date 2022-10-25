@@ -30,7 +30,8 @@ sources = [
 	'placeholder/instances/instances.c',
 	'placeholder/instances/services/input_service.c',
 	'placeholder/hashes.c',
-	'placeholder/util.c'
+	'placeholder/util.c',
+	'placeholder/plog.c'
 ]
 
 executable('placeholder', sources : sources, dependencies : dependencies, include_directories : inc_dirs)

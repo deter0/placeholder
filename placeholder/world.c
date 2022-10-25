@@ -11,6 +11,7 @@
 #include <placeholder/world.h>
 #include <placeholder/ff.h>
 #include <placeholder/util.h>
+#include <placeholder/plog.h>
 
 // #include "plui/plui.h"
 
@@ -128,6 +129,10 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 	if (ks_just_pressed(d_state)) {
 		printf("Key D Pressed IF\n");
 	}
+	p_debugLog("HELLO! %d\n", "hi!!", 25);
+	p_error("Error test\n", NULL);
+	//p_f_debugLog(NULL, "Hello, %d\n", 12);
+	
 	// printf("%d\n", d_state);
 }
 
