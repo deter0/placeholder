@@ -5,3 +5,4 @@ bool ks_just_pressed(e_keyState ks);
 bool ks_just_released(e_keyState ks);
 bool ks_is_down(e_keyState ks);
 bool ks_is_not_pressed(e_keyState ks);
+bool file_exists(const char *path);

@@ -68,4 +68,4 @@ void p_f_error(const char *di, const char *fmt, ...) {
   va_end(args);
 }
 
-#undef #define
+#undef output

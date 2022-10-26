@@ -97,6 +97,7 @@ static void draw_scene_recursive(Instance *scene) {
 	}
 }
 
+ImageSprite *image;
 void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int dsp_height) {
 	if (main_scene == NULL) {
 		main_scene = instance_new_scene();
@@ -106,6 +107,12 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 		hello_world->font = Almendra;
 		hello_world->font_size = 54;
 		
+		image = instance_new_image_sprite();
+		assert(image);
+		image->image_path = "../assets/gfx/default_character.png";
+		//image->m_loadImage(image);
+		
+		instance_set_parent((Instance*)image,       (Instance*)main_scene);
 		instance_set_parent((Instance*)hello_world, (Instance*)main_scene);
 	}
 	assert(main_scene != NULL);
@@ -115,24 +122,25 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 
 	draw_scene_recursive((Instance*)main_scene);
 	
+	e_keyState w_state = main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, ALLEGRO_KEY_W);
+	e_keyState a_state = main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, ALLEGRO_KEY_A);
+	e_keyState s_state = main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, ALLEGRO_KEY_S);
 	e_keyState d_state = main_scene->s_inputService->m_getKeyState(main_scene->s_inputService, ALLEGRO_KEY_D);
 	
-	if ((d_state & KS_JUST_PRESSED) != 0) {
-		printf("Key D Pressed\n");
-	}
-	if ((d_state & (KS_JUST_PRESSED | KS_HELD)) != 0) {
-		printf("Key D Held\n");
-	}
-	if ((d_state & KS_JUST_RELEASED) != 0) {
-		printf("Key D Released\n");
-	}
-	if (ks_just_pressed(d_state)) {
-		printf("Key D Pressed IF\n");
-	}
-	p_debugLog("HELLO! %d\n", "hi!!", 25);
-	p_error("Error test\n", NULL);
-	//p_f_debugLog(NULL, "Hello, %d\n", 12);
+	V2f direction = {0}; 
 	
-	// printf("%d\n", d_state);
+	if ((d_state & (KS_HELD | KS_JUST_PRESSED)) != 0) {
+		direction.x += 1;
+	}
+	if ((a_state & (KS_HELD | KS_JUST_PRESSED)) != 0) {
+		direction.x -= 1;
+	}
+	if ((w_state & (KS_HELD | KS_JUST_PRESSED)) != 0) {
+		direction.y += 1;
+	}
+	if ((s_state & (KS_HELD | KS_JUST_PRESSED)) != 0) {
+		direction.y -= 1;
+	}
+	direction = v2f_clamp
 }
 

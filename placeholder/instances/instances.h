@@ -81,17 +81,19 @@ constructor function Scene* instance_new_scene(void);
 
 typedef struct ImageSprite {
   Extends_Instance;
-  char           *image_path;
-  bool            image_is_loaded; // READ-ONLY
-  ALLEGRO_BITMAP *bm;
-  uint32_t        bm_w;
-  uint32_t        bm_h;
+  char                    *image_path;
+  readOnly bool            image_is_loaded;
+  internal ALLEGRO_BITMAP *bm;
+  readOnly uint32_t        image_w;
+  readOnly uint32_t        image_h;
   
-  V2f             anchor_point; // 0 to 1
-  TransformComponent transform;
+  V2f                      anchor_point; // 0 to 1
+  TransformComponent       transform;
+  
+  method(m_loadImage, int) (struct ImageSprite *self);
 } ImageSprite;
 ImageSprite *instance_new_image_sprite(void);
-function int instance_image_sprite_load_image(ImageSprite *img_sprite);
+// function int instance_image_sprite_load_image(ImageSprite *img_sprite);
 
 typedef struct TextLabel {
   Extends_Instance;
@@ -165,5 +167,7 @@ int instance_set_name(Instance *subject, const char *new_name);
 // => Note: If there are multiple children with the same name it will return the one registered in `@property Instance->children_fi`. 
 // In other words the most recent `@class Instance` to has changed it's name or set child of `@param subject`. 
 Instance *instance_find_first_child(Instance *subject, const char *child_name);
+
+char *instance_get_debug_info(Instance *subject);
 
 // -- Basic Functions

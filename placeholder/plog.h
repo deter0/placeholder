@@ -31,6 +31,11 @@ private const char *t_BR_MAGENTA = "\033[35;1m";
 private const char *t_BR_CYAN    = "\033[36;1m";
 private const char *t_BR_WHITE   = "\033[37;1m";
 
+void p_f_debugLog(const char *, const char *, ...);
+void p_f_log(const char *, const char *, ...);
+void p_f_warn(const char *, const char *, ...);
+void p_f_error(const char *, const char *, ...);
+
 #define p_debugLog(fmt, ...) p_f_debugLog(FILE_LINE, fmt, __VA_ARGS__)
 #define p_log(fmt, ...)      p_f_log(FILE_LINE, fmt, __VA_ARGS__)
 #define p_warn(fmt, ...)     p_f_warn(FILE_LINE, fmt, __VA_ARGS__)

@@ -10,6 +10,8 @@
 #include <placeholder/instances/instances.h>
 #include <placeholder/instances/services/input_service.h>
 #include <placeholder/ff.h>
+#include <placeholder/plog.h>
+#include <placeholder/util.h>
 
 #define init_children_fi(X) hashtable_init( \
 	&((X)->children_fi),                      \
@@ -28,7 +30,7 @@ private function size_t gen_instance_id(void) {
 }
 
 // ! Be sure to free
-private function char* get_instance_debug_info(Instance *instance) {
+function char* instance_get_debug_info(Instance *instance) {
 	char *buffer = (char*)malloc(512);
 
 	assert(buffer);
@@ -188,7 +190,7 @@ function int instance_set_parent(Instance* subject, Instance *new_parent) {
 		if (new_parent != NULL) {
 			if (new_parent->children_count >= MAX_CHILDREN) {
 				// No need to free since we're exiting
-				errx(1, "Instance exceeds max children. `%s`\n", get_instance_debug_info(new_parent));
+				errx(1, "Instance exceeds max children. `%s`\n", instance_get_debug_info(new_parent));
 			}
 			new_parent->children[new_parent->children_count++] = subject;
 			Instance **similar_exists = hashtable_find(
@@ -253,42 +255,15 @@ constructor function ImageSprite* instance_new_image_sprite(void) {
 	// hashtable_init(&image_sprite->children_fi, sizeof(char*), sizeof(Instance*), MAX_CHILDREN, 0);
 	init_children_fi(image_sprite);
 
-	image_sprite->transform   = (TransformComponent){0};
-	image_sprite->image_path  = NULL;
+	image_sprite->transform       = (TransformComponent){0};
+	image_sprite->image_path      = NULL;
 	image_sprite->image_is_loaded = false;
-	image_sprite->bm = NULL;
+	image_sprite->bm              = NULL;
+	image_sprite->m_loadImage     = m_loadImage;
+	image_sprite->m_draw          = (void (*)(struct Instance *))draw_image_sprite;
+	image_sprite->transform.scale = v2ff(250.f);
 	
 	return image_sprite;
-}
-
-constructor function int instance_image_sprite_load_image(ImageSprite *img_sprite) {
-	if (img_sprite->image_is_loaded == false) {
-		if (img_sprite->bm != NULL) {
-			al_destroy_bitmap(img_sprite->bm);
-		}
-		assert(img_sprite->image_path);
-
-		ALLEGRO_BITMAP *bm = al_load_bitmap(img_sprite->image_path);
-		assert(bm != NULL);
-		img_sprite->bm = bm;
-		
-		img_sprite->bm_w = al_get_bitmap_width(bm);
-		img_sprite->bm_h = al_get_bitmap_height(bm);
-		
-		img_sprite->image_is_loaded = true;
-		
-		return 0;
-	} else {
-		char *info = get_instance_debug_info((Instance*)img_sprite);
-		warnx("[WARNING]: called `instance_image_sprite_load_image` on image_sprite thats already loaded (%s).\n", info);
-		free(info);
-
-		img_sprite->bm = NULL;
-		img_sprite->bm_w = 0;
-		img_sprite->bm_h = 0;
-
-		return -1;
-	}
 }
 
 /* Legacy - Removed

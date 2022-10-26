@@ -175,6 +175,8 @@ int main() {
     };
     
     bool running = true;
+    bool redraw = false;
+    bool halt   = false;
     
     while (running) {
         ALLEGRO_EVENT event;
@@ -185,29 +187,39 @@ int main() {
                 running = false;
             } break;
             case (ALLEGRO_EVENT_TIMER): {
-                al_clear_to_color(al_map_rgb(0, 0, 0));
-                
-                ALLEGRO_KEYBOARD_STATE state;
-                al_get_keyboard_state(&state);
-                
-                if (al_key_down(&state, ALLEGRO_KEY_ESCAPE)) {
-                    running = false;
-                }
-                
-                int width = al_get_display_width(display);
-                int height = al_get_display_height(display);
-                world_draw(&world, &state, width, height);
-                
-                al_flip_display();
+                if (event.timer.source == frame_timer)
+                    redraw = 1;
             } break;
             case (ALLEGRO_EVENT_DISPLAY_RESIZE): {
                 al_acknowledge_resize(display);
+            } break;
+            case (ALLEGRO_EVENT_DISPLAY_HALT_DRAWING): {
+                halt = 1;
+            } break;
+            case (ALLEGRO_EVENT_DISPLAY_RESUME_DRAWING): {
+                halt = 0;
             } break;
             default: {
                 int shut_up = 1;
                 if (!shut_up)
                     warnx("Unhandled event: %d\n", event.type);
             } break;
+        }
+        if (!halt && redraw && al_event_queue_is_empty(queue)) {
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            
+            ALLEGRO_KEYBOARD_STATE state;
+            al_get_keyboard_state(&state);
+            
+            if (al_key_down(&state, ALLEGRO_KEY_ESCAPE)) {
+                running = false;
+            }
+            
+            int width = al_get_display_width(display);
+            int height = al_get_display_height(display);
+            world_draw(&world, &state, width, height);
+            
+            al_flip_display();
         }
     }    
     
