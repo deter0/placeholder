@@ -13,6 +13,9 @@
 #include <placeholder/util.h>
 #include <placeholder/plog.h>
 
+#define LA_IMPLEMENTATION
+#include <la/la.h>
+
 // #include "plui/plui.h"
 
 #define SCALE 4
@@ -141,6 +144,15 @@ void world_draw(World *world, ALLEGRO_KEYBOARD_STATE *state, int dsp_width, int 
 	if ((s_state & (KS_HELD | KS_JUST_PRESSED)) != 0) {
 		direction.y -= 1;
 	}
-	direction = v2f_clamp
+	
+	v2f_div(*(&direction), v2ff(v2f_sqrlen(direction)));
+	p_debugLog("Direction, %f, %f :: %f\n", direction.x, direction.y, v2f_sqrlen(direction));
+	
+	image->transform.position.x += direction.x;
+	image->transform.position.y += direction.y;
+	
+	p_debugLog("%f, %f\n", image->transform.position.x, image->transform.position.y);
+	
+	// image->transform.position = new_pos;
 }
 
