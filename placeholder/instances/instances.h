@@ -49,8 +49,18 @@ typedef struct TransformComponent {
 // & (? `@property Instance->children_fi`) 			Mainly for internal use this is a `@class hashtable_t` used for `@function instance_find_first_child.`
 // & (? `@property Instance->enable_debugging`) Debugging flag, this will call `@property Instance->m_debugDraw` when it's render time.
 
-#define Extends_Instance char            *name;                                          \
-                         char             *class_name;                                   \
+typedef enum e_instanceClass {
+  e_Instance = 0x80085,
+  e_Scene,
+  e_ImageSprite,
+  e_TextLabel,
+  e_UIContainer,
+  e_UILayout,
+  e_UIRectangle
+} e_instanceClass;
+
+#define Extends_Instance char             *name;                                         \
+                         e_instanceClass   class;                                        \
                          size_t            id;                                           \
                          struct Instance  *parent;                                       \
                          struct Instance  *children[MAX_CHILDREN];                       \
@@ -59,8 +69,6 @@ typedef struct TransformComponent {
                          method           (m_debugDraw, void)(struct Instance *self);    \
                          hashtable_t       children_fi;											             \
                          bool              enable_debugging
-
-
 
 // ++ Services ++
 

@@ -10,7 +10,7 @@ private FILE *bcp_output = NULL;
 
 // Amazing name
 private void helper(const char *label, const char *color, const char *di, const char *fmt) {
-  if (!isatty(output)) {
+  if (!isatty(output)) { // TODO(kay): FIX ME
     fprintf(
       output,
       "%s[%s (%s)]:%s ",

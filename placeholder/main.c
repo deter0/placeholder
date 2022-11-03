@@ -15,7 +15,6 @@
 
 
 #include <placeholder/instances/instances.h>
-#include <placeholder/characters.h>
 #include <placeholder/world.h>
 #include <placeholder/fonts.h>
 
@@ -55,8 +54,8 @@ ALLEGRO_DISPLAY *init_allegro() {
     
     al_install_keyboard();
     
-    al_set_new_display_flags(ALLEGRO_RESIZABLE);
-    ALLEGRO_DISPLAY *display = al_create_display(1024, 1024);
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+    ALLEGRO_DISPLAY *display = al_create_display(640, 480);
     if (!display)
         err(-1, "Failed to create allegro display!\n");
     
@@ -166,8 +165,6 @@ int main() {
     al_start_timer(frame_timer);
     
     // Load Default Characters
-    
-    load_characters(get_all_characters());
     
     World world = {
         .player_character = 0,

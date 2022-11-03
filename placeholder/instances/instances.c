@@ -36,7 +36,7 @@ function char* instance_get_debug_info(Instance *instance) {
 	assert(buffer);
 	memset(buffer, 0, 512);
 
-	sprintf(buffer, "[Instance: %lu] (%p) %s '%s'", instance->id, instance, instance->class_name, instance->name);
+	sprintf(buffer, "[Instance: %lu] (%p) C_%d '%s'", instance->id, instance, instance->class, instance->name);
 
 	return buffer;
 }
@@ -49,12 +49,12 @@ function int instance_destroy(Instance *subject) {
 	}
 
 	hashtable_term(&(subject->children_fi));
-	if (strcmp(subject->class_name, "TextLabel") == 0) {
+	if (subject->class == e_TextLabel) {
 		TextLabel *promoted = (TextLabel*)subject;
 		
 		if (promoted->text != NULL)
 			free(promoted->text);
-	} else if (strcmp(subject->class_name, "ImageSprite") == 0) {
+	} else if (subject->class == e_ImageSprite) {
 		ImageSprite *promoted = (ImageSprite*)subject;
 		
 		if (promoted->image_path != NULL)
@@ -64,7 +64,6 @@ function int instance_destroy(Instance *subject) {
 	}
 	
 	free(subject->name);
-	free(subject->class_name);
 	free(subject);
 	
 	return 0;
@@ -220,7 +219,7 @@ constructor function Scene* instance_new_scene(void) {
 		return NULL;
 	
 	memset(scene, 0, sizeof(*scene));
-	scene->class_name = strdup("Scene");
+	scene->class      = e_Scene;
 	scene->id 				= gen_instance_id();
 	scene->name       = strdup("Scene");
 	scene->parent 	  = NULL;
@@ -247,7 +246,7 @@ constructor function ImageSprite* instance_new_image_sprite(void) {
 		return NULL;
 	
 	memset(image_sprite, 0, sizeof(*image_sprite));
-	image_sprite->class_name  = strdup("ImageSprite");
+	image_sprite->class 		  = e_ImageSprite;
 	image_sprite->name        = strdup("ImageSprite");
 	image_sprite->id   				= gen_instance_id();
 	image_sprite->parent      = NULL;
@@ -298,7 +297,7 @@ constructor function TextLabel* instance_new_text_label(void) {
 		return 0;
 	memset(text_label, 0, sizeof(*text_label));
 	
-	text_label->class_name   = strdup("TextLabel");
+	text_label->class        = e_TextLabel;
 	text_label->name         = strdup("TextLabel");
 	text_label->id 				   = gen_instance_id();
 	text_label->parent       = NULL;
@@ -323,9 +322,9 @@ constructor function UIRectangle* instance_new_ui_rectangle(void) {
 		return 0;
 	memset(rectangle, 0, sizeof(*rectangle));
 	
-	rectangle->class_name = strdup("UIRectangle");
+	rectangle->class      = e_UIRectangle;
 	rectangle->name       = strdup("UIRectangle");
-	rectangle->id 				 = gen_instance_id();
+	rectangle->id 				= gen_instance_id();
 	rectangle->parent     = NULL;
 	
 	init_children_fi(rectangle);
@@ -343,9 +342,9 @@ constructor function Instance* instance_new_zeroed_any(size_t inst_size, const c
 	
 	init_children_fi(inst);
 	
-	inst->name = strdup(class_name);
-	inst->class_name = strdup(class_name);
-	inst->id = gen_instance_id();
+	inst->name  = strdup(class_name);
+	inst->class = e_Instance;
+	inst->id    = gen_instance_id();
 
 	return inst;
 }
@@ -353,7 +352,8 @@ constructor function Instance* instance_new_zeroed_any(size_t inst_size, const c
 constructor function UIContainer* instance_new_ui_container(void) {
 	UIContainer *ui_container = (UIContainer*)instance_new_zeroed_any(sizeof(UIContainer), "UIContainer");
 
-	ui_container->enabled = true;
+	ui_container->class     = e_UIContainer;
+	ui_container->enabled   = true;
 	ui_container->m_fadeOut = m_fadeOut;
 	
 	return ui_container;

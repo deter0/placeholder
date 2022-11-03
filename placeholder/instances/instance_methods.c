@@ -7,16 +7,12 @@
 #include <time.h>
 #endif
 
-#define assert_is(Y, X) assert(Y != NULL);                      \
-												assert(Y->class_name != NULL);          \
-												assert(strcmp(Y->class_name, X) == 0)   
-
 private function void m_fadeOut(Instance *self, float duration) {
 	printf("Method called!");
 }
 
 private function void m_setText(Instance *self, const char *fmt, ...) {
-	assert_is(self, "TextLabel");
+	assert(self->class == e_TextLabel);
 	TextLabel *promoted = (TextLabel*)self;
 	
 	// TODO(deter): Implement
@@ -34,7 +30,7 @@ private function void draw_text_label(TextLabel *text_label) {
 	start = clock();
 #endif
 
-	assert_is(text_label, "TextLabel");
+	assert(text_label->class == e_TextLabel);
 	
 	al_draw_textf(
 		fonts_get_font(get_font(text_label->font), text_label->font_size),
@@ -64,7 +60,7 @@ private function void draw_image_sprite(ImageSprite *image_sprite) {
 	start = clock();
 #endif
 
-	assert_is(image_sprite, "ImageSprite");
+	assert(image_sprite->class == e_ImageSprite);
 
 	if (image_sprite->image_is_loaded) {
 		assert(image_sprite->bm != NULL && image_sprite->image_w != 0 && image_sprite->image_h != 0);
@@ -107,7 +103,7 @@ private function void draw_image_sprite(ImageSprite *image_sprite) {
 
 
 private function void debug_draw_text_label(TextLabel *text_label) {
-	assert_is(text_label, "TextLabel");
+	assert(text_label->class == e_TextLabel);
 	
 	int x = 0, y = 0, width = 0, height = 0;
 	al_get_text_dimensions(
@@ -127,6 +123,8 @@ private function void m_draw(Instance *self) {
 }
 
 private function int m_loadImage(ImageSprite *img_sprite) {
+	assert(img_sprite->class == e_TextLabel);
+
 	if (img_sprite->image_is_loaded == false) {
 		if (img_sprite->bm != NULL) {
 			al_destroy_bitmap(img_sprite->bm);

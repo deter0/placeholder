@@ -23,8 +23,6 @@ dependencies = [
 
 sources = [
 	'placeholder/main.c',
-	'placeholder/characters.c',
-	'placeholder/all_characters.c',
 	'placeholder/world.c',
 	'placeholder/fonts.c',
 	'placeholder/instances/instances.c',

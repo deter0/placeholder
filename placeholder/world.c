@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 
-#include <placeholder/characters.h>
 #include <placeholder/instances/instances.h>
 #include <placeholder/fonts.h>
 #include <placeholder/world.h>
